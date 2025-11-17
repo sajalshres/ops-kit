@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "opskit"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "sajal", email = "sajal.shres@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "click",
+  "rich",
+  "PyYAML",
+  "requests",
+  "pytest",
+]
+
+[project.urls]
+Documentation = "https://github.com/sajal/opskit#readme"
+Issues = "https://github.com/sajal/opskit/issues"
+Source = "https://github.com/sajal/opskit"
+
+[tool.hatch.version]
+path = "src/opskit/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/opskit tests}"
+
+[tool.coverage.run]
+source_pkgs = ["opskit", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/opskit/__about__.py",
+]
+
+[tool.coverage.paths]
+opskit = ["src/opskit", "*/opskit/src/opskit"]
+tests = ["tests", "*/opskit/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
