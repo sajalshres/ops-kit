@@ -44,9 +44,32 @@ from opskit.sharepoint.client import (
 @click.pass_context
 def sharepoint_cli(ctx, tenant_id, client_id, client_secret, site_url, library, verbose):
     """SharePoint related commands."""
-    pass
+    """
+    SharePoint CLI using Microsoft Graph.
 
-@cli.command("upload")
+    Configure auth and site once at the group level, then use subcommands like:
+
+      spcli upload --local-folder ./dist
+    """
+    ctx.ensure_object(dict)
+
+    sp_client = SharePointClient(
+        tenant_id=tenant_id,
+        client_id=client_id,
+        client_secret=client_secret,
+        site_url=site_url,
+        library=library,
+        verbose=verbose,
+    )
+
+    ctx.obj["sp_client"] = sp_client
+    ctx.obj["verbose"] = verbose
+
+    if verbose:
+        click.echo(f"[cfg] site={site_url} library={library}", err=True)
+
+
+@sharepoint_cli.command("upload")
 @click.option(
     "--local-folder",
     type=click.Path(exists=True, file_okay=False),
